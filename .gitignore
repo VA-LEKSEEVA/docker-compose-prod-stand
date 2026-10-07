@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Environment (секреты)
+.env
+
+# Сертификаты (генерируются локально)
+nginx/certs/*.crt
+nginx/certs/*.key
+
+# Бэкапы
+backups/
