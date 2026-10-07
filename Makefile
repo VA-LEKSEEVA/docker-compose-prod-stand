@@ -1,25 +1,29 @@
-.PHONY: up down logs ps certs check
+.PHONY: up down down-v logs ps check clean
 
-# Запуск всех сервисов
 up:
 	docker compose up -d --build
 
-# Остановка всех сервисов
 down:
 	docker compose down
 
-# Просмотр логов
+down-v:
+	docker compose down -v
+
 logs:
 	docker compose logs -f
 
-# Статус контейнеров
 ps:
 	docker compose ps
 
-# Генерация сертификатов (сделаем на этапе 4)
-certs:
-	@echo "Certificate generation will be implemented in Stage 4"
-
-# Проверка эндпоинтов (сделаем на этапе 6)
 check:
-	@echo "Check will be implemented in Stage 6"
+	@echo "=== Health ==="
+	@curl -s http://localhost:8000/health || echo "❌ Backend down"
+	@echo "\n=== Ready ==="
+	@curl -s http://localhost:8000/ready || echo "❌ Backend not ready"
+	@echo "\n=== Root ==="
+	@curl -s http://localhost:8000/ || echo "❌ Unreachable"
+	@echo ""
+
+clean:
+	docker compose down -v --remove-orphans
+	docker system prune -f
